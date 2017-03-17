@@ -1,5 +1,6 @@
 package com.oaec.dvd.bizImpl;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import com.oaec.dvd.biz.IUserBiz;
 import com.oaec.dvd.model.User;
@@ -8,20 +9,20 @@ import com.oaec.dvd.model.User;
 public class IUserBizImpl implements IUserBiz{
 	
 	final int MAXNUM = 1000; 
-	User[] userArr = new User[1000];
-	int a = 0;
+	ArrayList<User> list = new ArrayList();
 	Scanner input = new Scanner(System.in);
-
+	int a = 0;
+	
 	@Override
 	public void register() {
-		if(a < 1000){
+		if(a < 100000){
 			System.out.println("欢迎注册！");
 			User user = new User();
 			System.out.println("请输入用户名：");
 			String userName = input.next();		
 			String name = userNameCheck(userName);			
 			user.setUname(userName);
-			while(checkUserName(userArr,userName) != null){
+			while(checkUserName(list,userName) != null){
 				System.out.println("该用户已存在，请重新输入用户名");
 				userName = input.next();
 			}		
@@ -29,7 +30,7 @@ public class IUserBizImpl implements IUserBiz{
 			String password = input.next();
 			passwordCheck(password);
 			user.setUname(password);
-			userArr[a++] = new User(a,userName,password,0);	
+			list.add(new User(a,userName,password,0));	
 			System.out.println("注册成功！");
 		}else{
 			System.out.println("注册用户数已达到上限");
@@ -43,7 +44,7 @@ public class IUserBizImpl implements IUserBiz{
 		System.out.println("请输入用户名：");
 		String userName = input.next();
 		userNameCheck(userName);
-		User user = checkUserName(userArr,userName);
+		User user = checkUserName(list,userName);
 		if(user != null){
 			System.out.println("请输入密码：");
 			String password = input.next();
@@ -56,14 +57,14 @@ public class IUserBizImpl implements IUserBiz{
 		}
 	}	
 
-	public User checkUserName(User[] user,String name){
+	public User checkUserName(ArrayList<User> list,String name){
 		User u = null;
-		if(user[0] == null){
+		if(list.get(0) == null){
 			return u;
 		}else{
 			for (int i = 0; i <= a; i++) {
-				if(name.equals(user[i].getUname())){
-					u =  user[i];
+				if(name.equals(list.get(i).getUname())){
+					u =  list.get(i);
 				}
 			}
 		}	
